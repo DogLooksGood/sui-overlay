@@ -1,0 +1,35 @@
+* sui-overlay
+
+The binary releases of Sui blockchain.
+
+* Usages
+
+The example usage with flake.
+
+#+begin_src nix
+  {
+
+    inputs = {
+      nixpkgs = { url = "github:NixOS/nixpkgs/nixos-23.05"; };
+      flake-utils = { url = "github:numtide/flake-utils"; };
+      sui-overlay = { url = "github:doglooksgood/sui-overlay"; };
+    };
+
+    outputs = { self, nixpkgs, flake-utils, sui-overlay }:
+      flake-utils.lib.eachDefaultSystem (system:
+        let
+          overlays = [ sui-overlay.overlays.default ];
+          pkgs = import nixpkgs { inherit system overlays; };
+        in
+          {
+            devShell = pkgs.mkShell {
+              buildInputs = with pkgs; [
+                sui-devnet # or sui-testnet, sui-mainnet
+              ];
+            };
+          }
+      );
+
+    ...
+  }
+#+end_src
