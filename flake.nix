@@ -7,13 +7,25 @@
   };
 
   outputs = { self, nixpkgs, flake-utils }:
-    let
-      pkgs = import nixpkgs { };
-      overlay = final: prev: import ./overlays final prev;
-    in
-    {
-      overlays = {
-        default = overlay;
-      };
-    };
+    flake-utils.lib.eachDefaultSystem
+      (system:
+        let
+          overlay = final: prev: import ./overlays final prev;
+          overlays = [ overlay ];
+          pkgs = import nixpkgs { inherit system overlays; };
+        in
+          {
+            overlays = {
+              default = overlay;
+            };
+            devShell = pkgs.mkShell {
+              nativeBuildInputs = [ pkgs.breakpointHook ];
+              buildInputs = [
+                pkgs.sui-devnet
+                pkgs.sui-testnet
+                pkgs.sui-mainnet
+              ];
+            };
+          }
+      );
 }

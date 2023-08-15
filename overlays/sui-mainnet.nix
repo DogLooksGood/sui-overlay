@@ -1,15 +1,13 @@
 pkgs: pkgs.stdenv.mkDerivation {
   name = "sui-mainnet";
 
-  src = pkgs.fetchurl {
+  src = pkgs.fetchzip {
     url = "https://github.com/MystenLabs/sui/releases/download/mainnet-v1.6.3/sui-mainnet-v1.6.3-ubuntu-x86_64.tgz";
-    sha256 = "78dea98395ff79ded89fefa7f677e8c427ba7f9825b8a8aac211e9597763d9cb";
+    sha256 = "sha256-jCpQUtEq8ssh0XP+bRBECmHGv9SGAJSigHdZAwX3C6w=";
   };
-
-  dontUnpack = true;
 
   installPhase = ''
     mkdir -p $out/bin
-    mv $src/target/release/sui-ubuntu-x86_64 $out/bin/sui
-  '';
+    cp $src/release/sui-ubuntu-x86_64 $out/bin/sui
+ '';
 }
