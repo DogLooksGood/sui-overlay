@@ -10,7 +10,7 @@ The example usage with flake.
   {
 
     inputs = {
-      nixpkgs = { url = "github:NixOS/nixpkgs/nixos-23.05"; };
+      nixpkgs = { url = "github:NixOS/nixpkgs/nixos-23.11"; };
       flake-utils = { url = "github:numtide/flake-utils"; };
       sui-overlay = { url = "github:doglooksgood/sui-overlay"; };
     };
@@ -18,13 +18,14 @@ The example usage with flake.
     outputs = { self, nixpkgs, flake-utils, sui-overlay }:
       flake-utils.lib.eachDefaultSystem (system:
         let
-          overlays = [ sui-overlay.overlays.default ];
+          overlays = [ sui-overlay.overlays.${system}.default ];
           pkgs = import nixpkgs { inherit system overlays; };
         in
           {
             devShell = pkgs.mkShell {
               buildInputs = with pkgs; [
                 sui-devnet # or sui-testnet, sui-mainnet
+                # other stuff
               ];
             };
           }
