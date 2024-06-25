@@ -2,15 +2,15 @@ pkgs: pkgs.stdenv.mkDerivation {
   name = "sui-mainnet";
 
   src = pkgs.fetchzip {
-    url = "https://github.com/MystenLabs/sui/releases/download/mainnet-v1.16.2/sui-mainnet-v1.16.2-ubuntu-x86_64.tgz";
-    sha256 = "sha256-I8hV04zJQ1/c5aNc3MdOC0i4t5DQgod3rOdv4PosEL4=";
+    stripRoot = false;
+    url = "https://github.com/MystenLabs/sui/releases/download/mainnet-v1.27.2/sui-mainnet-v1.27.2-ubuntu-x86_64.tgz";
+    sha256 = "sha256-aZv3rUKq0fK4YHR6ibVzpwVQeYtm22amxISmcKK8/5M=";
   };
 
   installPhase = ''
     mkdir -p $out/bin
-    cd $src/target/release
     for b in *; do
-        cp ''${b} $out/bin/''${b%-ubuntu-x86_64}
+        cp $b $out/bin/$b
     done
  '';
 }

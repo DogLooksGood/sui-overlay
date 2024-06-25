@@ -7,17 +7,14 @@ pkgs: pkgs.stdenv.mkDerivation {
   # |--external-crates/move/target/release/move-analyzer
   src = pkgs.fetchzip {
     stripRoot = false;
-    url = "https://github.com/MystenLabs/sui/releases/download/devnet-v1.17.0/sui-devnet-v1.17.0-ubuntu-x86_64.tgz";
-    sha256 = "sha256-pAduyLgqJINzW0nDky1zbo6ZaXcm7hAxOQ6+E2/q4LY=";
-
+    url = "https://github.com/MystenLabs/sui/releases/download/devnet-v1.27.0/sui-devnet-v1.27.0-ubuntu-x86_64.tgz";
+    sha256 = "sha256-MFZBquQyDCg7w3T4UPbVfbKfRE8bM0Aaw1cd9/j4FTU=";
   };
 
   installPhase = ''
     mkdir -p $out/bin
-    cp $src/external-crates/move/target/release/move-analyzer-ubuntu-x86_64 $out/bin/move-analyzer
-    cd $src/target/release
     for b in *; do
-        cp ''${b} $out/bin/''${b%-ubuntu-x86_64}
+        cp $b $out/bin/$b
     done
   '';
 }
