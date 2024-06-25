@@ -2,7 +2,7 @@
   description = "Sui blockchain binaries";
 
   inputs = {
-    nixpkgs = { url = "github:NixOS/nixpkgs/nixos-23.11"; };
+    nixpkgs = { url = "github:NixOS/nixpkgs/nixos-24.05"; };
     flake-utils = { url = "github:numtide/flake-utils"; };
   };
 
@@ -20,10 +20,10 @@
             };
             devShell = pkgs.mkShell {
               nativeBuildInputs = [ pkgs.breakpointHook ];
-              buildInputs = [
-                pkgs.sui-devnet
-                pkgs.sui-testnet
-                pkgs.sui-mainnet
+              buildInputs = with pkgs; [
+                sui-devnet
+                # sui-testnet
+                # sui-mainnet
               ];
             };
           }
