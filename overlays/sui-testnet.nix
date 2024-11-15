@@ -1,6 +1,10 @@
-pkgs: pkgs.stdenv.mkDerivation {
-  name = "sui-testnet";
+pkgs:
+let
   version = "1.37.2";
+in
+pkgs.stdenv.mkDerivation {
+  name = "sui-testnet";
+  inherit version;
 
   src = pkgs.fetchzip {
     stripRoot = false;

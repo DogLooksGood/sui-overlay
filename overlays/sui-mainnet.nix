@@ -1,6 +1,10 @@
-pkgs: pkgs.stdenv.mkDerivation {
-  name = "sui-mainnet";
+pkgs:
+let
   version = "1.36.2";
+in
+pkgs.stdenv.mkDerivation {
+  name = "sui-mainnet";
+  inherit version;
 
   src = pkgs.fetchzip {
     stripRoot = false;
