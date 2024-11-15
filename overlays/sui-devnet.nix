@@ -1,20 +1,20 @@
 pkgs: pkgs.stdenv.mkDerivation {
   name = "sui-devnet";
+  version = "1.37.0";
 
-  # Pass stripRoot=false; to fetchzip to assume flat list of files.
-  # devnet
-  # |--target/release/*
-  # |--external-crates/move/target/release/move-analyzer
   src = pkgs.fetchzip {
     stripRoot = false;
-    url = "https://github.com/MystenLabs/sui/releases/download/devnet-v1.27.0/sui-devnet-v1.27.0-ubuntu-x86_64.tgz";
-    sha256 = "sha256-MFZBquQyDCg7w3T4UPbVfbKfRE8bM0Aaw1cd9/j4FTU=";
+    url = "https://github.com/MystenLabs/sui/releases/download/devnet-v${version}/sui-devnet-v${version}-ubuntu-x86_64.tgz";
+    sha256 = "0j7bn9g8nm6q13mnyjw6czikilx7g0gdc4z0jn8pz975i61sw29n";
   };
 
   installPhase = ''
     mkdir -p $out/bin
     for b in *; do
-        cp $b $out/bin/$b
+      if [ -f "$b" ] && [ -x "$b" ]; then
+        cp "$b" $out/bin/
+        chmod +x $out/bin/"$b"
+      fi
     done
   '';
 }

@@ -1,16 +1,20 @@
 pkgs: pkgs.stdenv.mkDerivation {
   name = "sui-testnet";
+  version = "1.37.2";
 
   src = pkgs.fetchzip {
     stripRoot = false;
-    url = "https://github.com/MystenLabs/sui/releases/download/testnet-v1.27.2/sui-testnet-v1.27.2-ubuntu-x86_64.tgz";
-    sha256 = "sha256-aZv3rUKq0fK4YHR6ibVzpwVQeYtm22amxISmcKK8/5M=";
+    url = "https://github.com/MystenLabs/sui/releases/download/testnet-v${version}/sui-testnet-v${version}-ubuntu-x86_64.tgz";
+    sha256 = "0am30i64nqnq8d7dmk9g4hx78fpxplsd836qv9hbhvx5wr3lj2j6";
   };
 
   installPhase = ''
     mkdir -p $out/bin
     for b in *; do
-        cp $b $out/bin/$b
+      if [ -f "$b" ] && [ -x "$b" ]; then
+        cp "$b" $out/bin/
+        chmod +x $out/bin/"$b"
+      fi
     done
   '';
 }
